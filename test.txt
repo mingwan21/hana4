@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 test3
 test4
+=======
+test1
+>>>>>>> e392ebe (test1)
