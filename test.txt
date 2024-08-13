@@ -3,4 +3,8 @@ test3
 test4
 =======
 test1
+<<<<<<< HEAD
 >>>>>>> e392ebe (test1)
+=======
+test2
+>>>>>>> cee0f83 (test2)
