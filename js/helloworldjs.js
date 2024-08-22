@@ -53,18 +53,34 @@ function destructuring_ex2() {
   const id1 = arr[0][0].id;
 }
 
-function destructuring_ex3() {
-  const user = { name: "Hong", passwd: "xyz", addr: "Seoul" };
-  function getValueExceptInitial(k) {
-    // if (k == "name") {
-    //   const temp = user.name;
-    // } else if (k == "passwd") {
-    //   const temp = user.passwd;
-    // } else if (k == "addr") {
-    //   const temp = user.addr;
-    // }
-    // const = user;
-    // const = [...val];
-    return;
+function destructuring_ex3(k) {
+  //   const user = { name: "Hong", passwd: "xyz", addr: "Seoul" };
+  //   function getValueExceptInitial(k) {
+  //     if (k == "name") {
+  //       let temp = user.name;
+  //     } else if (k == "passwd") {
+  //       let temp = user.passwd;
+  //     } else if (k == "addr") {
+  //       let temp = user.addr;
+  //     }
+  //     let answer = temp - temp[0];
+  //     return answer;
+  // const { temp = k } = user;
+  // const = user;
+  // const = [...val];
+  //return;
+  //}
+}
+const user = { name: "Hong", passwd: "xyz", addr: "Seoul" };
+function getValueExceptInitial(k) {
+  if (k == "name") {
+    let temp = user.name;
+  } else if (k == "passwd") {
+    let temp = user.passwd;
+  } else if (k == "addr") {
+    let temp = user.addr;
   }
+  let answer = temp - temp[0];
+
+  return answer;
 }
