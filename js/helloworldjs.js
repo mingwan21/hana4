@@ -28,5 +28,43 @@ function arr_swap() {
 }
 //arr_swap();
 
-const hong = { id: 1, name: "Hong" };
-const lee = { id: 2, name: "Lee" };
+function destructuring_ex1() {
+  const hong = { id: 1, name: "Hong" };
+  const lee = { id: 2, name: "Lee" };
+
+  function f1(user) {
+    console.log(user.id, user.name);
+  }
+
+  function f2({ id, name }) {
+    console.log(id, name);
+  }
+
+  const f3 = ({ id, name }) => {
+    console.log(id, name);
+  };
+}
+
+// let rr = qq * 10;
+// let qq = 1;
+
+function destructuring_ex2() {
+  const arr = [[{ id: 1 }], [{ id: 2 }, { id: 3 }]];
+  const id1 = arr[0][0].id;
+}
+
+function destructuring_ex3() {
+  const user = { name: "Hong", passwd: "xyz", addr: "Seoul" };
+  function getValueExceptInitial(k) {
+    // if (k == "name") {
+    //   const temp = user.name;
+    // } else if (k == "passwd") {
+    //   const temp = user.passwd;
+    // } else if (k == "addr") {
+    //   const temp = user.addr;
+    // }
+    // const = user;
+    // const = [...val];
+    return;
+  }
+}
