@@ -45,42 +45,53 @@ function destructuring_ex1() {
   };
 }
 
-// let rr = qq * 10;
-// let qq = 1;
+destructuring_ex1();
 
 function destructuring_ex2() {
+  const user = { id: 1, name: "Hong", passwd: "xxx", addr: "Seoul" };
+  const { passwd, ...userinfo } = user; // 일반적 정답
+  //const userinfo = {...user};
+  //delete user.passwd; //다른 정답
+  console.log(userinfo);
+}
+destructuring_ex2();
+
+function destructuring_ex3() {
   const arr = [[{ id: 1 }], [{ id: 2 }, { id: 3 }]];
-  const id1 = arr[0][0].id;
+  const [[{ id: id1 }], [{ id: id2 }, { id: id3 }]] = arr;
+  console.log(id1, id2, id3);
 }
+destructuring_ex3();
 
-function destructuring_ex3(k) {
-  //   const user = { name: "Hong", passwd: "xyz", addr: "Seoul" };
-  //   function getValueExceptInitial(k) {
-  //     if (k == "name") {
-  //       let temp = user.name;
-  //     } else if (k == "passwd") {
-  //       let temp = user.passwd;
-  //     } else if (k == "addr") {
-  //       let temp = user.addr;
-  //     }
-  //     let answer = temp - temp[0];
-  //     return answer;
-  // const { temp = k } = user;
-  // const = user;
-  // const = [...val];
-  //return;
-  //}
-}
-const user = { name: "Hong", passwd: "xyz", addr: "Seoul" };
-function getValueExceptInitial(k) {
-  if (k == "name") {
-    let temp = user.name;
-  } else if (k == "passwd") {
-    let temp = user.passwd;
-  } else if (k == "addr") {
-    let temp = user.addr;
+function destructuring_ex4() {
+  const user = { name: "Hong", passwd: "xyz", addr: "Seoul" };
+  function getValueExceptInitial(k) {
+    const { [k]: val } = user;
+    const [, ...ret] = val;
+    return ret.join("");
   }
-  let answer = temp - temp[0];
-
-  return answer;
+  console.log(getValueExceptInitial("name")); // 'ong'
+  console.log(getValueExceptInitial("passwd")); // 'yz'
+  console.log(getValueExceptInitial("addr")); // 'eoul'
 }
+destructuring_ex4();
+
+function destructuring_ex5() {
+  const user = { name: "Hong", passwd: "xyz", addr: "Seoul" };
+  user.f = function () {
+    console.log("fff", this.name);
+  };
+  console.log("user :", user);
+  const { f: xf } = user;
+  xf();
+
+  function getDiffMillis(dt1, dt2) {
+    const d1 = new Date(dt1);
+    const d2 = new Date(destructuring_ex2);
+    const { getTime: getTime1 } = d1;
+    const { getTime: getTime2 } = d2;
+    return getTime1.bind(d1)() - getTime2.bind(d2)();
+  }
+  getDiffMillis("2021-01-01", "2021-01-02");
+}
+destructuring_ex5();
