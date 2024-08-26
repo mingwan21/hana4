@@ -28,22 +28,42 @@ function addTo100(a) {
 }
 console.log(addTo100(1));
 
-console.log("=================");
+console.log("TCO==============");
+
+function addTo100TCO(a, sum = 0) {
+  if (a == 100) return sum + 100;
+  return addTo100(a + 1, sum + a);
+}
+
+console.log(addTo100TCO(1));
+
+console.log("makeArray=======");
 
 function makeArray(a) {
-  let arr = new Array();
-  let count = 0;
-  count++;
-  if (count == a) return arr;
-  return a + makeArray(count);
+  if (a == 1) return [a];
+  return;
 }
 
 console.log(makeArray(3));
 
+console.log("makeReverseArray===");
+
 function makeReverseArray(a) {
-  let arr = new Array();
-  let count = a;
-  count--;
-  if (count == 0) return arr;
-  return a + makeArray(count);
+  if (a == 1) return [1];
+  return;
+}
+
+console.log("makeArrayTCO======");
+
+function makeArrayTCO1(n, acc = []) {
+  if (n == 1) return [1, ...acc];
+
+  return makeArrayTCO1(n - 1, [n, ...acc]);
+}
+
+function makeArrayTCO2(n, acc = []) {
+  // 엄격하게 TCO 따져보면
+  const t = [n, ...acc];
+  if (n == 1) return [1, ...acc];
+  return makeArrayTCO2(n - 1, t);
 }
