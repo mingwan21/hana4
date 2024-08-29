@@ -5,7 +5,15 @@ const someFn = (name, greeting) => console.log("${greeting}, ${name}");
 const someFn2 = (id, nickname, email, level) =>
   console.log("${id}/${nickname}/${email}/${level}");
 
-const template = (x, y);
+const template =
+  (f) =>
+  (...args) => {
+    before();
+    const ret = f(...args);
+    //after();
+    setTimeout(after);
+    return ret;
+  };
 
 const temp = template(someFn);
 const temp2 = template(someFn);
