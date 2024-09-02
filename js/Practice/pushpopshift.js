@@ -20,3 +20,4 @@ assert.deepstrictEqual(shift(arr), [2, 3, 4]);
 assert.deepstrictEqual(shift(arr, 2), [3, 4]);
 //
 assert.deepstrictEqual(arr, [1, 2, 3, 4]);
+pstrictEqual(shift(arr), [2, 3, 4]);
