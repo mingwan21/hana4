@@ -49,12 +49,16 @@
 
       // test code
       let runCnt = 0;
-      const intl = setInterval(() => {
+      runCnt += 1;
+      if (runCnt > 20) clearInterval(intl);
+      if (runCnt % 2 === 0) document.getElementById("btnKor").click();
+      else document.getElementById("btnMath").click();
+      /* const intl = setInterval(() => {
         runCnt += 1;
         if (runCnt > 20) clearInterval(intl);
         if (runCnt % 2 === 0) document.getElementById("btnKor").click();
         else document.getElementById("btnMath").click();
-      }, 200);
+      }, 200); */
     </script>
   </body>
 </html>

@@ -1,15 +1,90 @@
+const assert = require("assert");
+
+const LINE2 = [
+  "신도림",
+  "성수",
+  "신설동",
+  "용두",
+  "신답",
+  "용답",
+  "시청",
+  "충정로",
+  "아현",
+  "이대",
+  "신촌",
+  "공항철도",
+  "홍대입구",
+  "합정",
+  "당산",
+  "영등포구청",
+  "문래",
+  "대림",
+  "구로디지털단지",
+  "신대방",
+  "신림",
+  "봉천",
+  "서울대입구",
+  "낙성대",
+  "사당",
+  "방배",
+  "서초",
+  "교대",
+  "강남",
+  "역삼",
+  "선릉",
+  "삼성",
+  "종합운동장",
+  "신천",
+  "잠실",
+  "잠실나루",
+  "강변",
+  "구의",
+  "건대입구",
+  "뚝섬",
+  "한양대",
+  "왕십리",
+  "상왕십리",
+  "신당",
+  "동대문역사문화공원",
+  "을지로4가",
+  "을지로3가",
+  "을지로입구",
+];
+
+class Subway {
+  #currIdx; // #은 오염되지 않도록
+  #start;
+  #end;
+  #didEnd = false;
+  constructor(start, end) {
+    this.#start = start;
+    this.#end = end;
+    this.#currIdx = LINE2.indexOf(start);
+  }
+
+  nextStation() {
+    if (this.#currIdx === LINE2.length) this.#currIdx = 0;
+    const currStation = LINE2[this.#currIdx++];
+    this.#didEnd = currStation === this.#end;
+    //this.#didEnd = this.#currIdx === LINE2.indexOf(this.#end);
+    return currStation;
+  }
+
+  *[Symbol.iterator]() {
+    while (true) {
+      if (this.#didEnd) {
+        this.#didEnd = false;
+        this.#currIdx = LINE2.indexOf(this.#start);
+        break; // 무한루프에서 종료조건
+      }
+    }
+    yield this.nextStation();
+  }
+}
+
 const routes = new Subway("문래", "신림");
 let idx = 0;
 const it1 = routes[Symbol.iterator]();
-routes() = {
-    [Symbol.iterator](){
-        let i = 0;
-        return {
-            
-        }
-    }
-}
-    
 
 console.log([...routes]); // [ '문래', '대림', '구로디지털단지', '신대방', '신림' ]
 console.log(it1.next()); // { value: '문래', done: false }
