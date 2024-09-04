@@ -41,13 +41,17 @@ for (let i = "가".charCodeAt(); i <= "거".charCodeAt(); i++) {
 const ㄱ = "ㄱ".charCodeAt();
 const ㅎ = "ㅎ".charCodeAt();
 const 가 = "가".charCodeAt();
+const 힣 = "힣".charCodeAt();
 const 자음알파벳 = [..."LMNRlmnr"].map((a) => a.charCodeAt());
 const 자음숫자 = [..."136780"].map((n) => n.charCodeAt());
 
 function isEndJaum(str) {
   const s = str.charCodeAt(str.length - 1);
-  return (s - 가) % 28 !== 0 || (s >= ㄱ && ㄴ <= ㅎ) || 자음알파벳.includes(s);
+  return (
+    (s >= ㄱ && ㄴ <= ㅎ) || 자음알파벳.includes(s) || 자음숫자.includes(n)
+  );
 }
+
 /* function isEndJaum(word) {
   let lastLetter = word[word.length - 1];
   let uni = lastLetter.charCodeAt(0);
@@ -93,7 +97,8 @@ assert.strictEqual(`성동구${eunun("성동구")}`, "성동구는");
 assert.strictEqual(`성동구${eulul("성동구")}`, "성동구를"); */
 
 //ex4
-//1)
+//1) upperToLower
+
 function upperToLower(str) {
   return str.replace(/[A-Z]/g);
 }
@@ -101,7 +106,7 @@ function upperToLower(str) {
 upperToLower("Senior Coding Learning JS");
 // ⇒ '*s*-enior *c*-oding *l*-earning *j*-*s*-'
 
-//2)
+//2) swapCase
 const swapCase = (str) =>
   str.replace(/([A-Z]*)([a-z]*)/g, (...args) => {
     console.log(args);
@@ -114,3 +119,35 @@ assert.equal(
 );
 assert.equal(swapCase("Hanaro 4 Class"), "hANARO 4 cLASS");
 assert.equal(swapCase("HeLLo WoRLd"), "hEllO wOrlD");
+
+//3) telfmt
+const telfmt = (str) => {
+  const len = str.length;
+  if (len < 7) return str;
+  if (len <= 8) return str.replace(/(\d{3,4})(\d{4})/g, "$1-$2");
+
+  const g3 = 4;
+  const g1 = str.startWith("02") ? 2 : len === 12 ? 4 : 3;
+  const g2 = len - g1 - g2;
+  console.log(str, "->", g1, g2, g3);
+
+  const regexp = new RegExp(`/(\d{${g1}})(\d{${g2}})(\d{${g3}})$/`, "g");
+  return str.replace(regexp, "$1-$2-$3");
+};
+
+telfmt("0101234567"); // '010-123-4567’
+telfmt("01012345678"); // '010-1234-5678’
+telfmt("0212345678"); // '02-1234-5678’
+telfmt("021234567"); // '02-123-4567’
+telfmt("0331234567"); // '033-123-4567’
+telfmt("15771577"); // '1577-1577’
+telfmt("07012341234"); // '070-1234-1234’
+
+assert.deepStrictEqual(telfmt("0101234567"), "010-123-4567");
+assert.deepStrictEqual(telfmt("01012345678"), "010-1234-5678");
+assert.deepStrictEqual(telfmt("0212345678"), "02-1234-5678");
+assert.deepStrictEqual(telfmt("021234567"), "02-123-4567");
+assert.deepStrictEqual(telfmt("0331234567"), "033-123-4567");
+assert.deepStrictEqual(telfmt("15771577"), "1577-1577");
+assert.deepStrictEqual(telfmt("07012341234"), "070-1234-1234");
+assert.deepStrictEqual(telfmt("050712345678"), "0507-1234-5678");
