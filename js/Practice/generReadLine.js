@@ -1,5 +1,5 @@
 const readline = require("readline");
-
+import assert from "assert";
 const { stdin: input } = require("process");
 
 function* add() {

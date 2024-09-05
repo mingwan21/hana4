@@ -1,3 +1,10 @@
+export const isPrime = (n) => {
+  if (n === 1) return false;
+  Array.from({ length: Math.sqrt(n) - 1 }, (_, i) => i + 2).every(
+    (a) => n % a !== 0
+  );
+};
+
 const hong = { id: 1, name: "hong" };
 const kim = { id: 2, name: "kim" };
 const lee = { id: 3, name: "lee" };

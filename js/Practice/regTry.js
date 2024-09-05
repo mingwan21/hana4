@@ -1,4 +1,4 @@
-const assert = require("assert");
+import assert from "assert";
 //ex1)
 /* const total = { price: 45000, vat: 4500 };
 

@@ -1,5 +1,5 @@
 //push pop shift unshift
-const assert = require("assert");
+import assert from "assert";
 // function push(array, …args) {}
 let arr = [1, 2, 3, 4];
 

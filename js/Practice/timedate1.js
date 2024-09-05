@@ -1,5 +1,7 @@
-const moment = require("moment");
-const assert = require("assert");
+//const moment = require("moment");
+import moment from "moment";
+import assert from "assert";
+export { ex2 };
 
 //1) 1970년 1월 1일과 1970년 1월 2일의 차이를 초로 나타내시오.
 function p1() {
