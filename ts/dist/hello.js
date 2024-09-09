@@ -1,5 +1,11 @@
 "use strict";
-const myName = 'mingwan';
-const myAge = 28;
+const myName = "mingwan";
+console.log("🚀 ~ myName:", myName);
+const myAge = 33;
 console.log("🚀 ~ myAge:", myAge);
-console.log("🚀 ~ name:", myName); // 에러나는 이유는 하나의 파일로 인식해서
+let x;
+x = 1;
+x = "abc";
+const len = x.length;
+var y;
+console.log("🚀 ~ y:", y);
