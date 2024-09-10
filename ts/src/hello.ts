@@ -94,3 +94,15 @@ g = xx;
 
 if ("age" in xx) g = xx; // g에는 있고 m에는 없는
 else m = xx;
+
+const nums1 = [1, 2, 3, 4, 5];
+const nums2 = [10, 20, 30, 40, 50];
+
+const result1 = nums1.concat(nums2);
+// 당연히 result1은 number[]
+
+const strings1 = ["lim", "eun", "ha"];
+//const result2 = result1.concat(strings1); // strings 와 result 가 타입이 다르기 때문
+
+const lim = ["Lim", 26];
+//let limTup: [string, number] = lim;// limTup 은 튜플, LIM 은 array. array에 push 하면 두개 이상이 돼버리니까

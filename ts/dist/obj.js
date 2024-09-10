@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 let xuser;
 xuser = { id: 1, name: "xx" }; // OK
 /*
@@ -28,9 +29,3 @@ const xempp = {
     addr: "Pusan",
     road: "Sumyun",
 };
-/*
-const arr5: Emp[] | Emp2[] = [
-  { id: 1, name: "hong", addr: "seoul" },
-  { id: 2, name: "kim" },
-];
- */

@@ -1,18 +1,18 @@
-let userr: { id: number; name: string };
-xuser = { id: 1, name: "xx" }; // OK
+let xuserr: { id: number; name: string };
+xuserr = { id: 1, name: "xx" }; // OK
 // xuser = { id: 1 }; // Error (Property 'name' missing in type)
 // xuser = { id: 1, name: 'xx', age: 30 };
-xuser = { id: 1, name: "xx" };
+xuserr = { id: 1, name: "xx" };
 const temp = { id: 1, name: "xx", age: 30 };
-xuser = temp; // Error ({id, name, age} is not assignable to type {id,name} )
+xuserr = temp; // Error ({id, name, age} is not assignable to type {id,name} )
 
 type Empp = { id: number; name: string };
 const lee: Empp = { id: 1, name: "Lee" };
 const kimm = { id: 2, name: "Kim", addr: "Seoul" };
 
 const arrr0: Empp[] = [{ id: 1, name: "Hong" }];
-const arrr1: Empp[] = [{ id: 1, name: "Hong" }, kim];
-const arrr2: Empp[] = [{ id: 2, name: "Kim", addr: "Seoul" }, kim];
+const arrr1: Empp[] = [{ id: 1, name: "Hong" }, kimm];
+const arrr2: Empp[] = [{ id: 2, name: "Kim", addr: "Seoul" }, kimm];
 //const arrr3: Empp[] = [{ id: 2, name: "Kim", addr: "Seoul" }, lee];
 
 //const arrr4: [Userr, Empp] = [{ id: 2, name: "Kim", addr: "Seoul" }, kim];
@@ -26,3 +26,5 @@ const xemp: Empp | Empp2 | Empp3 = {
   addr: "Pusan",
   road: "Sumyun",
 };
+
+export {};

@@ -57,3 +57,5 @@ const arr5: Emp[] | Emp2[] = [
   { id: 2, name: "kim" },
 ];
  */
+
+export {};
