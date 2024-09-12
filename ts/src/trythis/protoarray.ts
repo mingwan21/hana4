@@ -1,24 +1,28 @@
+type Propkey = string | number | symbol;
 interface Array<T> {
   firstObject: T;
   lastObject: T;
-  mapBy: (prop: string) => T[];
+  mapBy: (prop: Propkey) => any;
+  filterBy: (prop: Propkey, value : T, isIncludes : boolean) => any;
+  rejectBy: (prop: Propkey, value : T, isIncludes : boolean) => any;
+  findBy = (prop : Propkey, value : T) => T | undefined;
 }
 
-Array.prototype.mapBy = function (prop: string) {
+Array.prototype.mapBy = function (prop: Propkey) {
   return this.map((a) => a[prop]);
 };
 
 Array.prototype.filterBy = function (prop, value, isIncludes = false) {
   const cb = isIncludes
-    ? (a) => a[prop]?.includes(value)
-    : (a) => a[prop] === value;
+    ? (a : any) => a[prop]?.includes(value)
+    : (a : any) => a[prop] === value;
 
   return this.filter(cb);
 };
 Array.prototype.rejectBy = function (prop, value, isIncludes = false) {
   const cb = isIncludes
-    ? (a) => !a[prop]?.includes(value)
-    : (a) => a[prop] !== value;
+    ? (a : any) => !a[prop]?.includes(value)
+    : (a : any) => a[prop] !== value;
 
   return this.filter(cb);
 };
@@ -67,10 +71,10 @@ Object.defineProperties(Array.prototype, {
   },
 });
 
-const hongx = { id: 1, name: "Hong" };
-const kimx = { id: 2, name: "Kim" };
-const leex = { id: 3, name: "Lee" };
-const users = [hongx, leex, kimx];
+const hong1 = { id: 1, name: "Hong", dept: "Server" };
+const kim1 = { id: 2, name: "Kim", dept: "Server" };
+const lee1 = { id: 3, name: "Lee", dept: "Client" };
+const users = [hong1, lee1, kim1];
 
 console.log(users.mapBy("id")); // [1, 3, 2];
 console.log(users.mapBy("name")); // ['Hong', 'Lee', 'Kim']);
@@ -83,9 +87,7 @@ console.log(users.sortBy("name:desc")); //  [lee, kim, hong];
 console.log(users.sortBy("name")); // [hong, kim, lee]
 
 console.log("first/last=", users.firstObject.name, users.lastObject.name); // hong
-users.firstObject = kimx;
+users.firstObject = kim1;
 console.log("kim=", users.firstObject.name); // kim
-users.lastObject = hongx;
-console.log(users.lastObject, hongx);
-
-export {};
+users.lastObject = hong1;
+console.log(users.lastObject, hong1);
