@@ -1,81 +1,86 @@
-import { ReactNode, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import Button from './atoms/Button';
+import LabelInput from './molecules/LabelInput';
 
-type TitleProps = {
-  text: string;
-  name: string;
-};
+export default function Login({
+  login,
+}: {
+  login: (id: number, name: string) => void;
+}) {
+  const [id, setId] = useState(0);
+  const [name, setName] = useState('');
 
-const Title = ({ text, name }: TitleProps) => {
-  // console.log('Titttttttttttttt!!');
-  return (
-    <h1>
-      {text} {name}
-    </h1>
-  );
-};
+  const signIn = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!id || !name) {
+      alert('Input the id & name!!');
+      return;
+    }
+    login(id, name);
+  };
 
-const Body = ({ children }: { children: ReactNode }) => {
-  // console.log('bodddddddd!!!');
-  return (
-    <div className='red' style={{ color: 'blue' }}>
-      {children}
-    </div>
-  );
-};
+  // const signIn = (e: FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const eles = e.currentTarget.elements;
+  //   const { id, name } = eles as typeof eles & {
+  //     id: HTMLInputElement;
+  //     name: HTMLInputElement;
+  //   };
+  //   // console.log('$$$', id, name);
+  //   if (!id.value || !name.value) {
+  //     alert('Input the id & name!!');
+  //     id.focus();
+  //     return;
+  //   }
 
-// function useState<S>(initValueOrFn) {
-//   const state = {
-//     _state: initValueOrFn,
-//     get state() {
-//       return this._state;
-//     },
-//     setState(x: S) {
-//       this._state = x;
-//       vdom.trigger(this);
-//     }
-//   }
+  //   login(+id.value, name.value);
+  // };
 
-//   return [state.state, state.setState];
-// }
-
-type Props = {
-  name: string;
-  age: number;
-  count: number;
-  plusCount: () => void;
-  minusCount: () => void;
-};
-
-export default function Hello({
-  name,
-  age,
-  count,
-  plusCount,
-  minusCount,
-}: Props) {
-  // const [myState, setMyState] = useState(() => new Date().getTime());
-  const [myState, setMyState] = useState(0);
-  let v = 1;
-  console.debug('********', v, myState, count);
+  const changeName = (e: ChangeEvent<HTMLInputElement>) => {
+    setName(e.currentTarget.value);
+  };
 
   return (
     <>
-      <Title text='Hi~' name={name} />
-      <Body>
-        This is Hello Body Component. {v} - {myState} - {age}
-      </Body>
-      <button
-        onClick={() => {
-          v++;
-          setMyState(myState + 1);
-          plusCount();
-          // console.log('v/myState=', v, myState);
-        }}
-      >
-        Hello
-      </button>
-      <strong className='mx-5'>{count}</strong>
-      <button onClick={() => minusCount()}>Minus</button>
+      <form onSubmit={signIn} className='border p-4'>
+        <LabelInput
+          label='ID'
+          type='number'
+          onChange={(e) => setId(+e.currentTarget.value)}
+        />
+        <LabelInput label='Name' type='text' onChange={changeName} />
+        {/* <div className='flex'>
+        <label htmlFor='id' className='w-24'>
+          ID:
+        </label>
+        <input
+          id='id'
+          type='number'
+          placeholder='ID...'
+          className='inp mb-3'
+          // onChange={(e) => setId(+e.currentTarget.value)}
+        />
+      </div> */}
+        {/* <div className='flex'>
+        <label htmlFor='name' className='w-24'>
+          Name:
+        </label>
+        <input
+          id='name'
+          type='text'
+          autoComplete='off'
+          placeholder='Name...'
+          className='inp'
+          // onChange={(e) => setName(e.currentTarget.value)}
+        />
+      </div> */}
+        {/* <button className='btn btn-success float-end mt-3'>Sign In</button> */}
+        <Button
+          text='Sign In'
+          variant='btn-success'
+          classNames='float-end mt-3'
+        />
+      </form>
     </>
   );
 }

@@ -9,6 +9,7 @@ type Props = {
 };
 
 export default function My({ session, logout, login }: Props) {
+  const logoutButtonRef = useRef<>;
   return (
     <>
       {session.loginUser ? (
@@ -19,6 +20,10 @@ export default function My({ session, logout, login }: Props) {
       <ul>
         {session.cart.map(({ id, name, price }) => (
           <li key={id}>
+            <strong>
+              {id}.{name}
+              <small className='my-3 w-1/3'></small>
+            </strong>
             {name} <small>({price.toLocaleString()})</small>
           </li>
         ))}

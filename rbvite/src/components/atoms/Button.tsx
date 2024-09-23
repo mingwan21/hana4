@@ -1,12 +1,20 @@
+import { ButtonHTMLAttributes } from 'react';
+
 type Props = {
   text: string;
-  variant: string;
-  classNames: string;
-};
-export default function Button({ text, variant = '' }: Props) {
+  variant?: string;
+  classNames?: string;
+} & ButtonHTMLAttributes<HTMLButtonElement>;
+
+export default function Button({
+  text,
+  variant = '',
+  classNames = '',
+  ...props
+}: Props) {
   return (
-    <button className={`btn ${variant} ${classNames} float-end mt-3`}>
-      Sign In
+    <button {...props} className={`btn ${variant} ${classNames}`}>
+      {text}
     </button>
   );
 }
