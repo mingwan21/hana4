@@ -1,20 +1,26 @@
-import { Session } from '../App';
-import Button from './atoms/Button';
+import { ForwardedRef, forwardRef } from 'react';
+import { useSession } from '../hooks/session-context';
+// import Button from './atoms/Button';
 
-type Props = {
-  session: Session;
-  logout: () => void;
-};
+const Profile = forwardRef(
+  (_: unknown, ref: ForwardedRef<HTMLButtonElement>) => {
+    const { session, logout } = useSession();
+    return (
+      <div className='mb-3 border px-5 py-2'>
+        <button
+          onClick={logout}
+          ref={ref}
+          className='btn btn-primary normal-case'
+        >
+          {session.loginUser?.name} Sign Out
+        </button>
 
-export default function Profile({ session, logout }: Props) {
-  return (
-    <div>
-      <h3>{session.loginUser?.name} Logined</h3>
-      <button onClick={logout} className='btn btn-primary'>
-        Sign Out
-      </button>
+        {/* <Button onClick={logout} text='SignOut' /> */}
+      </div>
+    );
+  }
+);
 
-      <Button onClick={logout} text='SignOut' />
-    </div>
-  );
-}
+Profile.displayName = 'Profile';
+
+export default Profile;

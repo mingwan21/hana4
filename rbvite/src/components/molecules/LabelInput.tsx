@@ -1,24 +1,33 @@
-import { ChangeEvent, InputHTMLAttributes, RefObject, useId } from 'react';
+import {
+  ChangeEvent,
+  ForwardedRef,
+  forwardRef,
+  InputHTMLAttributes,
+  useId,
+} from 'react';
 
 type Props = {
   label: string;
   type?: string;
   placehoder?: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
-  ref: RefObject<HTMLInputElement> | null;
+  // ref?: RefObject<HTMLInputElement> | null;
   classNames?: string;
   inputAttrs?: InputHTMLAttributes<HTMLInputElement>;
 };
 
-export default function LabelInput({
-  label,
-  inputAttrs,
-  type = 'text',
-  placehoder = `${label}...`,
-  onChange = () => {},
-  ref = null,
-  classNames = '',
-}: Props) {
+function LabelInput(
+  {
+    label,
+    inputAttrs,
+    type = 'text',
+    placehoder = `${label}...`,
+    onChange = () => {},
+    // ref = null,
+    classNames = '',
+  }: Props,
+  ref: ForwardedRef<HTMLInputElement>
+) {
   const id = useId();
   // console.log('🚀  id:', id);
 
@@ -39,3 +48,7 @@ export default function LabelInput({
     </div>
   );
 }
+
+const LabelInputRef = forwardRef(LabelInput);
+
+export default LabelInputRef;

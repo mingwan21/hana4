@@ -1,86 +1,101 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
-import Button from './atoms/Button';
-import LabelInput from './molecules/LabelInput';
+import {
+  ForwardedRef,
+  forwardRef,
+  ReactNode,
+  useImperativeHandle,
+  useState,
+} from 'react';
+import { useCounter } from '../hooks/counter-hook';
+import { useSession } from '../hooks/session-context';
 
-export default function Login({
-  login,
-}: {
-  login: (id: number, name: string) => void;
-}) {
-  const [id, setId] = useState(0);
-  const [name, setName] = useState('');
+type TitleProps = {
+  text: string;
+  name?: string;
+};
 
-  const signIn = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!id || !name) {
-      alert('Input the id & name!!');
-      return;
-    }
-    login(id, name);
+const Title = ({ text, name }: TitleProps) => {
+  // console.log('Titttttttttttttt!!');
+  return (
+    <h1 className='text-3xl'>
+      {text} {name}
+    </h1>
+  );
+};
+
+const Body = ({ children }: { children: ReactNode }) => {
+  // console.log('bodddddddd!!!');
+  return (
+    <div className='red' style={{ color: 'blue' }}>
+      {children}
+    </div>
+  );
+};
+
+// function useState<S>(initValueOrFn) {
+//   const state = {
+//     _state: initValueOrFn,
+//     get state() {
+//       return this._state;
+//     },
+//     setState(x: S) {
+//       this._state = x;
+//       vdom.trigger(this);
+//     }
+//   }
+
+//   return [state.state, state.setState];
+// }
+
+type Props = {
+  age: number;
+};
+
+export type MyHandler = {
+  jumpHelloState: () => void;
+};
+
+function Hello({ age }: Props, ref: ForwardedRef<MyHandler>) {
+  // const [myState, setMyState] = useState(() => new Date().getTime());
+  const {
+    session: { loginUser },
+  } = useSession();
+  const { count, plusCount, minusCount } = useCounter();
+  const [myState, setMyState] = useState(0);
+  let v = 1;
+
+  const handler: MyHandler = {
+    jumpHelloState: () => setMyState((pre) => pre * 10),
   };
-
-  // const signIn = (e: FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   const eles = e.currentTarget.elements;
-  //   const { id, name } = eles as typeof eles & {
-  //     id: HTMLInputElement;
-  //     name: HTMLInputElement;
-  //   };
-  //   // console.log('$$$', id, name);
-  //   if (!id.value || !name.value) {
-  //     alert('Input the id & name!!');
-  //     id.focus();
-  //     return;
-  //   }
-
-  //   login(+id.value, name.value);
-  // };
-
-  const changeName = (e: ChangeEvent<HTMLInputElement>) => {
-    setName(e.currentTarget.value);
-  };
+  useImperativeHandle(ref, () => handler);
 
   return (
-    <>
-      <form onSubmit={signIn} className='border p-4'>
-        <LabelInput
-          label='ID'
-          type='number'
-          onChange={(e) => setId(+e.currentTarget.value)}
-        />
-        <LabelInput label='Name' type='text' onChange={changeName} />
-        {/* <div className='flex'>
-        <label htmlFor='id' className='w-24'>
-          ID:
-        </label>
-        <input
-          id='id'
-          type='number'
-          placeholder='ID...'
-          className='inp mb-3'
-          // onChange={(e) => setId(+e.currentTarget.value)}
-        />
-      </div> */}
-        {/* <div className='flex'>
-        <label htmlFor='name' className='w-24'>
-          Name:
-        </label>
-        <input
-          id='name'
-          type='text'
-          autoComplete='off'
-          placeholder='Name...'
-          className='inp'
-          // onChange={(e) => setName(e.currentTarget.value)}
-        />
-      </div> */}
-        {/* <button className='btn btn-success float-end mt-3'>Sign In</button> */}
-        <Button
-          text='Sign In'
-          variant='btn-success'
-          classNames='float-end mt-3'
-        />
-      </form>
-    </>
+    <div className='my-5 border border-slate-300 p-3'>
+      <Title text='Hello~' name={loginUser?.name} />
+      <Body>
+        <h3 className='text-center text-2xl'>myState: {myState}</h3>
+        This is Hello Body Component. {v} - {age}
+      </Body>
+      <button
+        onClick={() => {
+          v++;
+          setMyState(myState + 1);
+          plusCount();
+          // console.log('v/myState=', v, myState);
+        }}
+        className='btn'
+      >
+        Hello(+)
+      </button>
+      <strong id='cnt' className='mx-5'>
+        {count}
+      </strong>
+      <button onClick={() => minusCount()} className='btn btn-danger'>
+        Minus
+      </button>
+    </div>
   );
 }
+
+const ImpHello = forwardRef(Hello);
+
+export default ImpHello;
