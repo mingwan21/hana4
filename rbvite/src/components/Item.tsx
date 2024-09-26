@@ -1,6 +1,5 @@
 import { FaTrashCan } from 'react-icons/fa6';
 import { useSession, type CartItem } from '../hooks/session-context';
-//import { useSession, type CartItem } from '../hooks/session-context';
 import { FormEvent, MouseEvent, useRef, useState } from 'react';
 import { useCounter } from '../hooks/counter-hook';
 import Button from './atoms/Button';
@@ -43,7 +42,8 @@ export default function Item({ item, toggleAdding }: Props) {
     plusCount();
   };
 
-  const removeItem = (id: number) => {
+  const removeItem = (e: MouseEvent<HTMLButtonElement>, id: number) => {
+    e.stopPropagation();
     if (confirm('Are u sure?')) {
       removeCartItem(id);
     }
@@ -77,6 +77,13 @@ export default function Item({ item, toggleAdding }: Props) {
     const currPrice = Number(priceRef.current?.value);
     setDirty(name !== currName || price !== currPrice);
   };
+
+  // useLayoutEffect(() => {
+  //   sddaadsffsa
+
+  //   return () => { }
+  // }, [y]);
+  // useEffect(() => {}, [x, y]);
 
   return (
     <>
@@ -121,7 +128,7 @@ export default function Item({ item, toggleAdding }: Props) {
             </small>
           </strong>
           <button
-            onClick={() => removeItem(id)}
+            onClick={(e) => removeItem(e, id)}
             className='btn btn-danger px-1 py-0'
           >
             <FaTrashCan />

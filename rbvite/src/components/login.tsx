@@ -1,27 +1,25 @@
 import {
   FormEvent,
-  ForwardedRef,
-  forwardRef,
+  useEffect,
   useImperativeHandle,
+  useLayoutEffect,
   useRef,
 } from 'react';
 import Button from './atoms/Button';
 import LabelInput from './molecules/LabelInput';
+import { useSession } from '../hooks/session-context';
+import { useCounter } from '../hooks/counter-hook';
+import { useTimeout } from '../hooks/timer-hooks';
+// import { useCounter } from '../hooks/counter-hook';
 
 export type LoginHandler = {
   focus: (prop: string) => void;
 };
 
-export default forwardRef(function Login(
-  {
-    login,
-  }: {
-    login: (id: number, name: string) => void;
-  },
-  ref: ForwardedRef<LoginHandler>
-) {
-  // const [id, setId] = useState(0);
-  // const [name, setName] = useState('');
+export default function Login() {
+  const { login, loginRef } = useSession();
+  const { count, plusCount, minusCount } = useCounter();
+
   const idRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
 
@@ -31,7 +29,7 @@ export default forwardRef(function Login(
       if (prop === 'name') nameRef.current?.focus();
     },
   };
-  useImperativeHandle(ref, () => handler);
+  useImperativeHandle(loginRef, () => handler);
 
   const signIn = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,27 +37,37 @@ export default forwardRef(function Login(
     const name = nameRef.current?.value ?? '';
     login(+id, name);
   };
-  // const signIn = (e: FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   const eles = e.currentTarget.elements;
-  //   const { id, name } = eles as typeof eles & {
-  //     id: HTMLInputElement;
-  //     name: HTMLInputElement;
-  //   };
-  //   // console.log('$$$', id, name);
-  //   if (!id.value || !name.value) {
-  //     alert('Input the id & name!!');
-  //     id.focus();
-  //     return;
-  //   }
 
-  //   login(+id.value, name.value);
-  // };
+  // useEffect(() => {
+  //   const intl = setTimeout((x) => console.log('xxx', x), 500, 123);
 
-  // const changeName = (e: ChangeEvent<HTMLInputElement>) => {
-  //   console.log('nnnnnnnn>>', name);
-  //   setName(e.currentTarget.value);
-  // };
+  //   return () => clearTimeout(intl);
+  // }, []);
+  useTimeout((x: number, y: number) => console.log('xxx', x, y), 500, 123, 456);
+
+  const f = (y: number) => {
+    console.log('useTimeout!!', y);
+  };
+  useTimeout(f, 500, 555);
+
+  useLayoutEffect(() => {
+    console.log('useLayoutEffect!!');
+  }, []);
+
+  useEffect(() => {
+    console.log('useeffffffff11', count);
+    plusCount();
+
+    return minusCount;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // 1
+  // }, [count, plusCount, minusCount]); // 1
+
+  // useEffect(() => {
+  //   console.log('useeffffffff22');
+
+  //   return minusCount;
+  // }, [minusCount]);
 
   return (
     <>
@@ -115,4 +123,4 @@ export default forwardRef(function Login(
       </form>
     </>
   );
-});
+}
