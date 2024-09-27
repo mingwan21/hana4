@@ -9,7 +9,7 @@ import Button from './atoms/Button';
 import LabelInput from './molecules/LabelInput';
 import { useSession } from '../hooks/session-context';
 import { useCounter } from '../hooks/counter-hook';
-import { useTimeout } from '../hooks/timer-hooks';
+import { useInterval, useTimeout } from '../hooks/timer-hooks';
 // import { useCounter } from '../hooks/counter-hook';
 
 export type LoginHandler = {
@@ -43,31 +43,34 @@ export default function Login() {
 
   //   return () => clearTimeout(intl);
   // }, []);
-  useTimeout((x: number, y: number) => console.log('xxx', x, y), 500, 123, 456);
+  // useTimeout((x: number, y: number) => console.log('xxx', x, y), 500, 123, 456);
 
-  const f = (y: number) => {
-    console.log('useTimeout!!', y);
+  // useInterval(() => console.log('interval!!'), 1000);
+  console.log('*****', new Date().getSeconds());
+  useInterval(plusCount, 1500);
+  // const f = useCallback(() => { console.log('once?'); }, []);
+  const f = () => {
+    console.log('once?');
   };
-  useTimeout(f, 500, 555);
+  useTimeout(f, 1000);
 
   useLayoutEffect(() => {
-    console.log('useLayoutEffect!!');
+    // console.log('useLayoutEffect!!');
   }, []);
 
   useEffect(() => {
-    console.log('useeffffffff11', count);
     plusCount();
+    // console.log('effect', count);
 
-    return minusCount;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // 1
-  // }, [count, plusCount, minusCount]); // 1
+    return () => {
+      // console.log('xx');
+      minusCount();
+    };
+  }, [count, plusCount, minusCount]); // 1
 
-  // useEffect(() => {
-  //   console.log('useeffffffff22');
-
-  //   return minusCount;
-  // }, [minusCount]);
+  useEffect(() => {
+    idRef.current?.focus();
+  }, []);
 
   return (
     <>

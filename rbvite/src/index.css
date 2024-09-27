@@ -19,6 +19,8 @@
 
   .btn-danger {
     @apply bg-red-600 text-white hover:bg-red-700 focus:ring-red-400;
+    /* background-color: theme('colors.red.600');
+    padding: 10px theme('padding.3'); */
   }
 
   .btn-success {

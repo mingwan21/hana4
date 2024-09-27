@@ -7,6 +7,7 @@ import {
 } from 'react';
 import { useCounter } from '../hooks/counter-hook';
 import { useSession } from '../hooks/session-context';
+import { useFetch } from '../hooks/fetch-hook';
 
 type TitleProps = {
   text: string;
@@ -47,14 +48,21 @@ const Body = ({ children }: { children: ReactNode }) => {
 // }
 
 type Props = {
-  age: number;
+  friend: number;
 };
 
 export type MyHandler = {
   jumpHelloState: () => void;
 };
 
-function Hello({ age }: Props, ref: ForwardedRef<MyHandler>) {
+type PlaceUser = {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+};
+
+function Hello({ friend }: Props, ref: ForwardedRef<MyHandler>) {
   // const [myState, setMyState] = useState(() => new Date().getTime());
   const {
     session: { loginUser },
@@ -68,12 +76,23 @@ function Hello({ age }: Props, ref: ForwardedRef<MyHandler>) {
   };
   useImperativeHandle(ref, () => handler);
 
+  const { data: friendInfo, error } = useFetch<PlaceUser>(
+    `https://jsonplaceholder.typicode.com/users/${friend}`,
+    true,
+    [friend]
+  );
+
   return (
     <div className='my-5 border border-slate-300 p-3'>
       <Title text='Hello~' name={loginUser?.name} />
       <Body>
         <h3 className='text-center text-2xl'>myState: {myState}</h3>
-        This is Hello Body Component. {v} - {age}
+        {error ? (
+          <strong className='text-red-500'>{error.message}</strong>
+        ) : (
+          <strong>My friend is {friendInfo?.username}.</strong>
+        )}
+        {v} - {friend}
       </Body>
       <button
         onClick={() => {
