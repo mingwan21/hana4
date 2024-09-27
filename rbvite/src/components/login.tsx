@@ -46,8 +46,8 @@ export default function Login() {
   // useTimeout((x: number, y: number) => console.log('xxx', x, y), 500, 123, 456);
 
   // useInterval(() => console.log('interval!!'), 1000);
-  console.log('*****', new Date().getSeconds());
-  useInterval(plusCount, 1500);
+  // console.log('*****', new Date().getSeconds());
+  // useInterval(plusCount, 1500);
   // const f = useCallback(() => { console.log('once?'); }, []);
   const f = () => {
     console.log('once?');
