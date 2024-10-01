@@ -4,8 +4,8 @@ import {
   PropsWithChildren,
   useContext,
   useLayoutEffect,
+  useReducer,
   useRef,
-  useState,
 } from 'react';
 import { LoginHandler } from '../components/Login';
 import { useFetch } from './fetch-hook';
@@ -45,10 +45,37 @@ type SessionContextProps = Omit<typeof contextInitValue, 'session'> & {
   session: Session;
 };
 
+type Action =
+  | {
+      type: 'login';
+      payload: LoginUser;
+    }
+  | {
+      type: 'logout';
+      payload: null;
+    }
+  | { type: 'addCartItem'; payload: CartItem }
+  | { type: 'editCartItem'; payload: CartItem }
+  | { type: 'removeCartItem'; payload: { toRemoveId: number } };
+
+const reducer = (session: Session, { type, payload }: Action) => {
+  switch (type) {
+    case 'login':
+      return { ...session, loginUser: payload };
+    case 'logout':
+      return { ...session, loginUser: null };
+    case 'addCartItem':
+      return { ...session, cart: [...session.cart, payload] };
+    default:
+      return session;
+  }
+};
+
 const SessionContext = createContext<SessionContextProps>(contextInitValue);
 
 export const SessionProvider = ({ children }: PropsWithChildren) => {
-  const [session, setSession] = useState<Session>(SampleSession);
+  // const [session, setSession] = useState<Session>(SampleSession);
+  const [session, dispatch] = useReducer(reducer, SampleSession);
   const [reloadSession, toggleReloadSession] = useToggle();
 
   const { data } = useFetch<Session>('/data/sample.json', true, [
@@ -75,15 +102,18 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
       return loginRef.current?.focus('name');
     }
 
-    setSession({
-      ...session,
-      loginUser: { id, name },
-    });
+    // setSession({
+    //   ...session,
+    //   loginUser: { id, name },
+    // });
+
+    dispatch({ type: 'login', payload: { id, name } });
   };
 
   const addCartItem = (name: string, price: number) => {
     const id = Math.max(...session.cart.map(({ id }) => id), 0) + 1;
-    setSession({ ...session, cart: [...session.cart, { id, name, price }] });
+    // setSession({ ...session, cart: [...session.cart, { id, name, price }] });
+    dispatch({ type: 'addCartItem', payload: { id, name, price } });
   };
 
   const removeCartItem = (toRemoveId: number) => {

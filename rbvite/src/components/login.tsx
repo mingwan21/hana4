@@ -45,14 +45,14 @@ export default function Login() {
   // }, []);
   // useTimeout((x: number, y: number) => console.log('xxx', x, y), 500, 123, 456);
 
-  // useInterval(() => console.log('interval!!'), 1000);
+  useInterval(() => console.log('interval!!'), 1000);
   // console.log('*****', new Date().getSeconds());
   // useInterval(plusCount, 1500);
   // const f = useCallback(() => { console.log('once?'); }, []);
   const f = () => {
     console.log('once?');
   };
-  useTimeout(f, 1000);
+  useTimeout(f, 1500);
 
   useLayoutEffect(() => {
     // console.log('useLayoutEffect!!');

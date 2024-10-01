@@ -2,11 +2,12 @@ import { FaPlus } from 'react-icons/fa6';
 import Login from './Login.tsx';
 import Profile from './Profile.tsx';
 import Button from './atoms/Button.tsx';
-import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useSession } from '../hooks/session-context.tsx';
 import Item from './Item.tsx';
 import useToggle from '../hooks/toggle.ts';
 import { useTimeout } from '../hooks/timer-hooks.ts';
+import { FaSearch } from 'react-icons/fa';
 
 export default function My() {
   const { session, toggleReloadSession } = useSession();
@@ -17,6 +18,7 @@ export default function My() {
   //   setIsAdding((pre) => !pre);
   // };
   const [isAdding, toggleAdding] = useToggle();
+  const [searchstr, setSerchstr] = useState('');
 
   // const primitive = 123;
 
@@ -34,7 +36,7 @@ export default function My() {
   const dcPrice = useMemo(() => totalPrice * 0.1, [totalPrice]);
 
   useLayoutEffect(() => {
-    console.log('$$$$$$$$$$$$$$$$', totalPrice);
+    // console.log('$$$$$$$$$$$$$$$$', totalPrice);
   }, [totalPrice]);
 
   let xxx = 0;
@@ -83,13 +85,24 @@ export default function My() {
         <Login />
       )}
 
+      <div className='flex'>
+        <FaSearch />
+        <input
+          onChange={(e) => setSerchstr(e.currentTarget.value)}
+          type='text'
+          className='inp'
+        ></input>
+      </div>
+
       <ul className='mt-3 w-2/3 border p-3'>
         {session.cart?.length ? (
-          session.cart.map((item) => (
-            <li key={item.id}>
-              <Item item={item} />
-            </li>
-          ))
+          session.cart
+            .filter((name) => name.includes(searchstr))
+            .map((item) => (
+              <li key={item.id}>
+                <Item item={item} />
+              </li>
+            ))
         ) : (
           <li className='text-slate-500'>There is no items.</li>
         )}

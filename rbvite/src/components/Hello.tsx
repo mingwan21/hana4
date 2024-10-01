@@ -3,12 +3,15 @@ import {
   forwardRef,
   ReactNode,
   useImperativeHandle,
+  useReducer,
   useState,
 } from 'react';
 import { useCounter } from '../hooks/counter-hook';
 import { useSession } from '../hooks/session-context';
 import { useFetch } from '../hooks/fetch-hook';
 import { FaSpinner } from 'react-icons/fa6';
+import { useMyReducer, useMyState } from '../libs/my-uses';
+import Button from './atoms/Button';
 
 type TitleProps = {
   text: string;
@@ -69,7 +72,10 @@ function Hello({ friend }: Props, ref: ForwardedRef<MyHandler>) {
     session: { loginUser },
   } = useSession();
   const { count, plusCount, minusCount } = useCounter();
-  const [myState, setMyState] = useState(0);
+
+  const [p, dispatchP] = useReducer((pre) => pre + 10, 0);
+  const [q, dispatchQ] = useMyReducer((pre) => pre + 10, 0);
+  //const [myState, setMyState] = useState(0);
   let v = 1;
 
   const handler: MyHandler = {
@@ -92,12 +98,11 @@ function Hello({ friend }: Props, ref: ForwardedRef<MyHandler>) {
       <Title text='Hello~' name={loginUser?.name} />
       <Body>
         <h3 className='text-center text-lg'>myState: {myState}</h3>
-        {isLoading && (
+        {isLoading ? (
           <h3 className='flex justify-center'>
             <FaSpinner size={20} className='animate-spin text-slate-500' />
           </h3>
-        )}
-        {error ? (
+        ) : error ? (
           <strong className='text-red-500'>
             {error.message && error.message.startsWith('404')
               ? `Your friend is not found(${friend})`
@@ -105,7 +110,7 @@ function Hello({ friend }: Props, ref: ForwardedRef<MyHandler>) {
           </strong>
         ) : (
           <div className='flex h-10 items-center justify-center rounded-lg shadow-[0_0_10px_purple]'>
-            My friend is {friendInfo?.username}.
+            My friend is {friendInfo?.id}. {friendInfo?.username}.
           </div>
         )}
         <p>
