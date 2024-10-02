@@ -1,73 +1,4 @@
-import {
-  ForwardedRef,
-  forwardRef,
-  ReactNode,
-  useImperativeHandle,
-  useReducer,
-} from 'react';
-import { useCounter } from '../hooks/counter-hook';
-import { useSession } from '../hooks/session-context';
-import { useFetch } from '../hooks/fetch-hook';
-import { FaSpinner } from 'react-icons/fa6';
-
-type TitleProps = {
-  text: string;
-  name?: string;
-};
-
-const Title = ({ text, name }: TitleProps) => {
-  // console.log('Titttttttttttttt!!');
-  return (
-    <h1 className='text-3xl'>
-      {text} {name}
-    </h1>
-  );
-};
-
-const Body = ({ children }: { children: ReactNode }) => {
-  // console.log('bodddddddd!!!');
-  return (
-    <div className='red' style={{ color: 'blue' }}>
-      {children}
-    </div>
-  );
-};
-
-// function useState<S>(initValueOrFn) {
-//   const state = {
-//     _state: initValueOrFn,
-//     get state() {
-//       return this._state;
-//     },
-//     setState(x: S) {
-//       this._state = x;
-//       vdom.trigger(this);
-//     }
-//   }
-
-//   return [state.state, state.setState];
-// }
-
-type Props = {
-  friend: number;
-};
-
-export type MyHandler = {
-  jumpHelloState: () => void;
-};
-
-type PlaceUser = {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-};
-
-// why S & Function is not callable...
-// type X = { id: number } & number;
-// const x: X = { id: 1 };
-// console.log('🚀  x:', x);
-
+import { useCallback, useReducer, useState } from 'react';
 /**
   const [state, setState] = useMyState(...);
   useMyState(1) | useSuseMyStatetate(() => 1)
@@ -79,8 +10,9 @@ type PlaceUser = {
  */
 // type WithoutParamFunction<T> = () => T;
 // type SS<X> = (x: X) => X;
+
 // useMyState(() => () => 1) ,  setState(() => 9)
-function useMyState<S>(init: S | (() => S)) {
+export function useMyState<S>(init: S | (() => S)) {
   const [state, dispatch] = useReducer(
     (pre: S, action: S | ((s: S) => S)) =>
       isActionFunction<S>(action) ? action(pre) : action,
@@ -98,21 +30,33 @@ function isActionFunction<T>(x: unknown): x is (t: T) => T {
   return typeof x === 'function';
 }
 
-/* 
-    const [state, dispatch] = useMyReducer(..);
-    useMyReducer(pre => !pre , false);
-    useMyReducer((pre, action) => pre + 1, false);
-    dispatch()
-*/
+// why S & Function is not callable...
+// type X = { id: number } & number;
+// const x: X = { id: 1 };
+// console.log('🚀  x:', x);
 
-export const useMyReducer = <R,S> (reducer:R, initArg:S, init?(s:S)=>S) => {
-    const [state, setState] = useState(
-        init ? init(initArg) : initArg
-    );
+/**
+ * const [state, dispatch] = useMyReducer(...);
+ * useMyReducer(pre => !pre, false)
+ * useMyReducer((pre, action) => pre + action, false)
+ *
+ * dispatch() | dispatch(10) | dispatch({type: 'plus...})
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const useMyReducer = <R extends (pre: S, action: any) => S, S>(
+  reducer: R,
+  initArg: S,
+  init?: (s: S) => S
+) => {
+  const [state, setState] = useState(init ? init(initArg) : initArg);
 
-    const dispatch = (action: unknown) => {
-        setState((pre) => render(pre, action))
-    }
+  const dispatch = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (action: any) => {
+      setState((pre) => reducer(pre, action));
+    },
+    [reducer]
+  );
 
-    const
-}
+  return [state, dispatch] as const;
+};

@@ -1,44 +1,27 @@
 import { FaPlus } from 'react-icons/fa6';
-import Login from './Login.tsx';
-import Profile from './Profile.tsx';
-import Button from './atoms/Button.tsx';
-import {
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useReducer,
-  useRef,
-  useState,
-} from 'react';
-import { useSession } from '../hooks/session-context.tsx';
-import Item from './Item.tsx';
-import useToggle from '../hooks/toggle.ts';
-import { useDebounce, useTimeout } from '../hooks/timer-hooks.ts';
 import { FaSearch } from 'react-icons/fa';
-import styles from './My.module.css';
-import clsx from 'clsx';
-
-export default function My() {
-  const { session, toggleReloadSession } = useSession();
-  const logoutButtonRef = useRef<HTMLButtonElement>(null);
-
+import Button from './atoms/Button';
+import { useLayoutEffect, useMemo, useReducer, useRef, useState } from 'react';
+import useToggle from '../hooks/toggle';
+import { useDebounce } from '../hooks/timer-hooks';
+import { useSession } from '../hooks/session-context';
+import Item from './Item';
+export default function Items() {
+  const { session } = useSession();
   // const [isAdding, setIsAdding] = useState(false);
   // const toggleAdding = () => {
   //   setIsAdding((pre) => !pre);
   // };
   // const [isAdding, toggleAdding] = useToggle();
   const [isAdding, toggleAdding] = useReducer((pre) => !pre, false);
-
   // onChange={(e) => addPrice(+e.currentTarget.value)}
   // const [totalPrice, addPrice] = useReducer(
   //   (acc, toAddPrice) => acc + toAddPrice,
   //   0
   // );
-
   const [, toggleSearch] = useToggle();
   const searchRef = useRef<HTMLInputElement>(null);
   const [searchstr, setSearchstr] = useState('');
-
   useDebounce(
     () => {
       // console.log('useDebounce.search>>', searchRef.current?.value);
@@ -47,9 +30,7 @@ export default function My() {
     200,
     [searchRef.current?.value]
   );
-
   const [ulHeight, setUlHeight] = useState(0);
-
   // const ulCbRef = useCallback(
   //   (node: HTMLUListElement) => {
   //     console.log('node>>>', node, session.cart.length);
@@ -61,79 +42,24 @@ export default function My() {
     // console.log('node>>>', node, session.cart.length);
     setUlHeight(node?.clientHeight);
   };
-
   // const primitive = 123;
-
   // useEffect(() => {
   //   console.log('*******11', primitive, isAdding);
-
   //   return () => console.log('unmount11!!');
   // }, [primitive, isAdding]);
-
   const totalPrice = useMemo(
     () => session.cart?.reduce((acc, item) => acc + item.price, 0),
     [session.cart]
   );
-
   const dcPrice = useMemo(() => totalPrice * 0.1, [totalPrice]);
-
   useLayoutEffect(() => {
     // console.log('$$$$$$$$$$$$$$$$', totalPrice);
   }, [totalPrice]);
-
-  let xxx = 0;
-  // useEffect(() => {
-  //   console.log('*******22');
-  //   // alert('login plz...');
-
-  //   return () => console.log('unmount22!!');
-  // }, []);
-  useTimeout(() => {
-    xxx++;
-  }, 1000);
-
-  useEffect(() => {
-    // const abortController = new AbortController();
-    // const { signal } = abortController;
-    // (async function () {
-    //   try {
-    //     const data = await fetch('/data/sample.json', { signal }).then((res) =>
-    //       res.json()
-    //     );
-    //     console.log('My.data>>', data);
-    //   } catch (error) {
-    //     console.error('Error>>', error);
-    //   }
-    // })();
-    // fetch('/data/sample.json', { signal })
-    //   .then((res) => res.json())
-    //   .then((data) => {
-    //     console.log('data>>', data);
-    //   })
-    //   .catch((error) => console.error('Error>>', error));
-    // return () => abortController.abort('Clean-up in My!');
-  }, []);
-
   return (
     <>
-      <div className={clsx(!session.loginUser && 'border border-red-500')}>
-        {session.loginUser ? (
-          <div className='flex gap-5'>
-            <Profile ref={logoutButtonRef} xxx={xxx} />
-            <Button
-              onClick={() => logoutButtonRef.current?.focus()}
-              classNames='h-full'
-            >
-              MySignOut
-            </Button>
-          </div>
-        ) : (
-          <Login />
-        )}
-      </div>
-      <div className='w-2/3 border p-3'>
+      <div className='w-full border p-3'>
         <div className='flex items-center gap-2'>
-          <FaSearch className={`${styles.xx}`} />
+          <FaSearch />
           <input
             // onChange={(e) => setSearchstr(e.currentTarget.value)}
             onChange={toggleSearch}
@@ -169,13 +95,11 @@ export default function My() {
           </li>
         </ul>
       </div>
-
       <div className='mb-3 flex gap-5'>
         <span>*총액: {totalPrice?.toLocaleString()}원</span>
         <span>*할인: {dcPrice.toFixed(0).toLocaleString()}원</span>
         <span>{ulHeight}</span>
       </div>
-      <Button onClick={toggleReloadSession}>Reload Session</Button>
     </>
   );
 }

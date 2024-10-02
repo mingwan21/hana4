@@ -1,22 +1,53 @@
-import { useRef, useState } from 'react';
+import { memo, useReducer, useRef, useState } from 'react';
 import Hello, { MyHandler } from './components/Hello';
 import My from './components/My';
 import { SessionProvider } from './hooks/session-context';
 import { useDebounce } from './hooks/timer-hooks';
 import useToggle from './hooks/toggle';
+import Button from './components/atoms/Button';
+import Nav from './Nav';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import Login from './components/Login';
+import { NotFound } from './NotFound';
+import Home from './Home';
+import Items from './components/Items';
+
 // import { useInterval } from './hooks/timer-hooks';
 // import Button from './components/atoms/Button';
 // import { useCounter } from './hooks/counter-hook';
+
+const ColorTitle = ({
+  color,
+  backgroundColor,
+}: {
+  color: string;
+  backgroundColor: string;
+}) => {
+  console.log('@@@ ColorTitle!!', color);
+  return (
+    <h2 className='text-2xl' style={{ color, backgroundColor }}>
+      MEMO
+    </h2>
+  );
+};
+
+const MemoedColorTitle = memo(ColorTitle, ({ color: a }, { color: b }) => {
+  console.log('🚀  a b:', a, b);
+
+  return a === b;
+});
 
 function App() {
   const [friend, setFriend] = useState(10);
   const [, toggleReRender] = useToggle();
   const myHandleRef = useRef<MyHandler>(null);
 
+  const [color, changeColor] = useReducer(() => 'blue', 'red');
+
   const friendRef = useRef<HTMLInputElement>(null);
   useDebounce(
     () => {
-      console.log('useDebounce>>>>>>>', friendRef.current?.value);
+      // console.log('useDebounce>>>>>>>', friendRef.current?.value);
       setFriend(+(friendRef.current?.value || 0));
     },
     1000,
@@ -33,7 +64,22 @@ function App() {
         <Button onClick={clear}>Clear</Button>
       </div> */}
 
+      <div className='flex gap-2'>
+        <MemoedColorTitle color='white' backgroundColor={color} />
+        <Button onClick={changeColor}>ChangeColor</Button>
+      </div>
+
       <SessionProvider>
+        <Nav />
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/my' element={<My />} />
+          <Route path='/items' element={<Items />} />
+          {/* <Route path='/items/:id' element={<Item />} /> */}
+          <Route path='/hello' element={<Hello />} />
+          <Route path='*' element={<NotFound />} />
+        </Routes>
         <div className='mt-3 w-64'>
           <input
             type='number'
