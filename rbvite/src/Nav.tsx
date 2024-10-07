@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useSession } from './hooks/session-context';
 import { FaUserAlt } from 'react-icons/fa';
 
@@ -8,21 +8,24 @@ export default function Nav() {
     <nav className='fixed w-full bg-white/80'>
       <ul className='mb-3 flex h-8 items-center justify-around shadow backdrop-blur-sm'>
         <li>
-          <Link to='/' replace>
+          <NavLink to='/' replace>
             Home
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to='/login'>Login</Link>
+          <NavLink to='/login'>Login</NavLink>
         </li>
         <li>
-          <Link to='/my'>My</Link>
+          <NavLink to='/my'>My</NavLink>
         </li>
         <li>
-          <Link to='/items'>Items</Link>
+          <NavLink to='/items'>Items</NavLink>
         </li>
         <li>
-          <Link to='/hello'>Hello</Link>
+          <NavLink to='/items/2'>Item2</NavLink>
+        </li>
+        <li>
+          <NavLink to='/hello'>Hello</NavLink>
         </li>
         {session.loginUser && (
           <li className='flex items-center gap-1'>

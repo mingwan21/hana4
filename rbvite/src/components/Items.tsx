@@ -6,6 +6,7 @@ import useToggle from '../hooks/toggle';
 import { useDebounce } from '../hooks/timer-hooks';
 import { useSession } from '../hooks/session-context';
 import Item from './Item';
+
 export default function Items() {
   const { session } = useSession();
   // const [isAdding, setIsAdding] = useState(false);
@@ -14,14 +15,17 @@ export default function Items() {
   // };
   // const [isAdding, toggleAdding] = useToggle();
   const [isAdding, toggleAdding] = useReducer((pre) => !pre, false);
+
   // onChange={(e) => addPrice(+e.currentTarget.value)}
   // const [totalPrice, addPrice] = useReducer(
   //   (acc, toAddPrice) => acc + toAddPrice,
   //   0
   // );
+
   const [, toggleSearch] = useToggle();
   const searchRef = useRef<HTMLInputElement>(null);
   const [searchstr, setSearchstr] = useState('');
+
   useDebounce(
     () => {
       // console.log('useDebounce.search>>', searchRef.current?.value);
@@ -30,7 +34,9 @@ export default function Items() {
     200,
     [searchRef.current?.value]
   );
+
   const [ulHeight, setUlHeight] = useState(0);
+
   // const ulCbRef = useCallback(
   //   (node: HTMLUListElement) => {
   //     console.log('node>>>', node, session.cart.length);
@@ -42,19 +48,26 @@ export default function Items() {
     // console.log('node>>>', node, session.cart.length);
     setUlHeight(node?.clientHeight);
   };
+
   // const primitive = 123;
+
   // useEffect(() => {
   //   console.log('*******11', primitive, isAdding);
+
   //   return () => console.log('unmount11!!');
   // }, [primitive, isAdding]);
+
   const totalPrice = useMemo(
     () => session.cart?.reduce((acc, item) => acc + item.price, 0),
     [session.cart]
   );
+
   const dcPrice = useMemo(() => totalPrice * 0.1, [totalPrice]);
+
   useLayoutEffect(() => {
     // console.log('$$$$$$$$$$$$$$$$', totalPrice);
   }, [totalPrice]);
+
   return (
     <>
       <div className='w-full border p-3'>
@@ -95,6 +108,7 @@ export default function Items() {
           </li>
         </ul>
       </div>
+
       <div className='mb-3 flex gap-5'>
         <span>*총액: {totalPrice?.toLocaleString()}원</span>
         <span>*할인: {dcPrice.toFixed(0).toLocaleString()}원</span>
