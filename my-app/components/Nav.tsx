@@ -8,6 +8,8 @@ export default function Nav() {
       <a href='/parallel'>Parallel</a>
       <a href='/intercept'>Intercept</a>
       <a href='/todos'>Todos</a>
+      <a href='/photos'>Photos</a>
+      <a href='/books'>Books</a>
       <a href='/about'>About</a>
     </nav>
   );
