@@ -4,33 +4,33 @@ import java.util.Scanner;
 
 // MyScan ms = new MyScan();
 public class MyScan {
+	// private String name;
 	public static void main(String[] args) {
+		// scanUserInfo();
 		scanTemp();
 	}
 
 	private static void scanTemp() {
 		final int currTemp = 20;
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("수심 : ");
-		double depth = scanner.nextDouble();
-		double result = currTemp - Math.floor(depth / 10) * 0.7;
+		Scanner scan = new Scanner(System.in);
+		System.out.print("수심: ");
+		int deep = scan.nextInt();
+		double result = currTemp - Math.floor((double)deep / 10) * 0.7;
 		System.out.println(result);
 	}
 
 	private static void scanUserInfo() {
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("당신의 이름을 입력하세요 ==> ");
-		String name = scanner.nextLine();
-		System.out.print("당신의 주소를 입력하세요 ==> ");
-		String addr = scanner.nextLine();
-		System.out.print("당신의 키를 입력하세요 ==> ");
-		double height = scanner.nextDouble();
-		System.out.print("당신의 나이를 입력하세요 ==> ");
-		int age = scanner.nextInt();
+		Scanner scan = new Scanner(System.in);
+		System.out.print("Name: ");
+		String name = scan.nextLine();
+		System.out.print("Addr: ");
+		String addr = scan.nextLine();
+		System.out.print("Age: ");
+		int age = scan.nextInt();
+		System.out.print("Height: ");
+		double height = scan.nextDouble();
 
-		System.out.println("이름 : " + name);
-		System.out.println("주소 : " + addr);
-		System.out.println("키 : " + height);
-		System.out.println("나이 :" + age);
+		System.out.printf("name is %s, addr is %s, age is %d years old, height is %4.1f", name, addr, age, height);
 	}
+
 }
