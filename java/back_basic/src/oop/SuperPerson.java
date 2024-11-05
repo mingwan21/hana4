@@ -3,34 +3,28 @@ package oop;
 import java.util.Objects;
 
 public class SuperPerson {
-	public static void main(String[] args) {
-		Person hong = new Person("Hong", 33);
-		System.out.println("hong = " + hong);
-		Person kim = new Person("Kim", 30);
-		System.out.println("kim = " + kim);
-		System.out.println("age=" + kim.getAge());
-	}
-}
-
-class Person {
 	private final String name;
-	private int age;
+	protected final int age;
 
-	public Person(String name, int age) {
+	public SuperPerson(String name, int age) {
+		System.out.println("Super2");
 		this.name = name;
 		this.age = age;
 	}
 
-	public String getName() {
-		return name;
+	public SuperPerson() {
+		// this("", 0);
+		this.name = "";
+		this.age = 0;
+		System.out.println("Super1");
 	}
 
 	public int getAge() {
 		return age;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
+	public String getName() {
+		return this.name;
 	}
 
 	@Override
@@ -41,8 +35,8 @@ class Person {
 		if (obj == null || getClass() != obj.getClass()) {
 			return false;
 		}
-		Person person = (Person)obj;
-		return age == person.age && Objects.equals(name, person.name);
+		SuperPerson person = (SuperPerson)obj;
+		return age == person.getAge() && Objects.equals(name, person.getName());
 	}
 
 	@Override
@@ -53,7 +47,29 @@ class Person {
 
 	@Override
 	public String toString() {
-		return "Person{"
+		return "SuperPerson{"
 			+ "name='" + name + '\'' + ", age=" + age + '}';
+	}
+
+	public static void main(String[] args) {
+		// Person hong = new Person("Hong", 33);
+		// System.out.println("hong = " + hong);
+		// SuperPerson kim = new Person("Kim", 30);
+		// System.out.println("kim = " + kim);
+		// System.out.println("age=" + kim.getAge());
+
+		SuperPerson ps = Math.random() > 0.5 ? new Student() : new Person();
+
+		if (ps instanceof Person) {
+			System.out.println("ps = " + ps.getClass().getSimpleName());
+			((Person)ps).walk();
+		} else {
+			System.out.println("ps = " + ps.getClass().getSimpleName());
+		}
+
+		if (ps instanceof Person psPerson) {
+			psPerson.walk();
+		}
+
 	}
 }
