@@ -1,4 +1,0 @@
-@host =  http://localhost:3000
-# GET ttt
-
-GET {{{host}}}/api/ttt?q=세종대왕
