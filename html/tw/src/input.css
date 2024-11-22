@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+}
+
+@layer components {
+  .btn {
+    @apply px-2 py-3 rounded-md uppercase shadow-md hover:bg-slate-400 focus:ring-blue-400;
+  }
+  .btnprimary {
+    @apply btn text-white bg-blue-700;
+  }
+  .btndanger {
+    @apply btn text-white bg-red-700;
+  }
+  .btnsuccess {
+    @apply btn text-white bg-green-700;
+  }
+}
+@layer utilities {
+  .text-rrr {
+    color: red;
+  }
+}
