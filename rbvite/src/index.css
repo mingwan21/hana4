@@ -3,6 +3,24 @@
 @tailwind utilities;
 
 @layer base {
+  a {
+    font-weight: 500;
+    color: theme('colors.blue.400');
+    text-decoration: inherit;
+  }
+  a:hover {
+    color: inherit;
+  }
+
+  nav li > a:hover {
+    text-decoration: underline;
+  }
+  nav li > a.active:hover {
+    color: white;
+    text-decoration: none;
+    cursor: default;
+  }
+
   input.inp {
     @apply w-full rounded-md border px-2 py-1 focus:border-blue-500 focus:outline-none focus:ring-0;
   }
@@ -28,6 +46,15 @@
   }
 }
 
+@layer utilities {
+  .active {
+    background-color: theme('colors.blue.500');
+    color: white;
+    padding: 2px;
+    border-radius: 8px;
+  }
+}
+
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -41,15 +68,6 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
 }
 
 body {

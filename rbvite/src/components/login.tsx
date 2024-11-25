@@ -17,6 +17,7 @@ export type LoginHandler = {
 };
 
 export default function Login() {
+  console.log('Rerender Login!!');
   const { login, loginRef } = useSession();
   const { count, plusCount, minusCount } = useCounter();
 
@@ -74,7 +75,7 @@ export default function Login() {
 
   return (
     <>
-      <form onSubmit={signIn} className='border p-4'>
+      <form onSubmit={signIn} className='p-4'>
         <LabelInput
           label='ID'
           type='number'
@@ -127,3 +128,5 @@ export default function Login() {
     </>
   );
 }
+
+// export default memo(Login, ({ login: a }, { login: b }) => a === b);

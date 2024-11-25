@@ -8,7 +8,7 @@ const Profile = forwardRef(
     // console.log('xxx>>>', xxx);
 
     return (
-      <div className='mb-3 border px-5 py-2'>
+      <div className='mb-3 px-5 py-2'>
         <button
           onClick={logout}
           ref={ref}
