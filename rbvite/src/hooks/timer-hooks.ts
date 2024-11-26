@@ -44,13 +44,14 @@ function useTimer<T extends (...args: Parameters<T>) => ReturnType<T>>(
     timerRef.current = timerFn(cbRef.current, delay, ...argsRef.current);
   }, [delay, timerFn]);
   const clear = useCallback(() => {
-    console.log('useTime.clear.timer>>', timerRef.current);
+    // console.log('useTime.clear.timer>>', timerRef.current);
     clearFn(timerRef.current);
   }, [clearFn]);
   const reset = useCallback(() => {
     clear();
     setup();
   }, [clear, setup]);
+
   useEffect(() => {
     setup();
     return clear;

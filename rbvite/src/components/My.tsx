@@ -1,43 +1,14 @@
-import { FaPlus } from 'react-icons/fa6';
 import Login from './Login.tsx';
 import Profile from './Profile.tsx';
 import Button from './atoms/Button.tsx';
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSession } from '../hooks/session-context.tsx';
-import Item from './Item.tsx';
-import useToggle from '../hooks/toggle.ts';
 import { useTimeout } from '../hooks/timer-hooks.ts';
-import { FaSearch } from 'react-icons/fa';
+import clsx from 'clsx';
 
 export default function My() {
   const { session, toggleReloadSession } = useSession();
   const logoutButtonRef = useRef<HTMLButtonElement>(null);
-
-  // const [isAdding, setIsAdding] = useState(false);
-  // const toggleAdding = () => {
-  //   setIsAdding((pre) => !pre);
-  // };
-  const [isAdding, toggleAdding] = useToggle();
-  const [searchstr, setSerchstr] = useState('');
-
-  // const primitive = 123;
-
-  // useEffect(() => {
-  //   console.log('*******11', primitive, isAdding);
-
-  //   return () => console.log('unmount11!!');
-  // }, [primitive, isAdding]);
-
-  const totalPrice = useMemo(
-    () => session.cart.reduce((acc, item) => acc + item.price, 0),
-    [session.cart]
-  );
-
-  const dcPrice = useMemo(() => totalPrice * 0.1, [totalPrice]);
-
-  useLayoutEffect(() => {
-    // console.log('$$$$$$$$$$$$$$$$', totalPrice);
-  }, [totalPrice]);
 
   let xxx = 0;
   // useEffect(() => {
@@ -74,55 +45,27 @@ export default function My() {
 
   return (
     <>
-      {session.loginUser ? (
-        <div className='flex gap-5'>
-          <Profile ref={logoutButtonRef} xxx={xxx} />
-          <Button onClick={() => logoutButtonRef.current?.focus()}>
-            MySignOut
-          </Button>
-        </div>
-      ) : (
-        <Login />
-      )}
-
-      <div className='flex'>
-        <FaSearch />
-        <input
-          onChange={(e) => setSerchstr(e.currentTarget.value)}
-          type='text'
-          className='inp'
-        ></input>
-      </div>
-
-      <ul className='mt-3 w-2/3 border p-3'>
-        {session.cart?.length ? (
-          session.cart
-            .filter((name) => name.includes(searchstr))
-            .map((item) => (
-              <li key={item.id}>
-                <Item item={item} />
-              </li>
-            ))
-        ) : (
-          <li className='text-slate-500'>There is no items.</li>
+      <div
+        className={clsx(
+          !session.loginUser && 'border-2 border-red-500',
+          'rounded-md'
         )}
-        <li className='mt-3 text-center'>
-          {isAdding ? (
-            <Item
-              item={{ id: 0, name: '', price: 0 }}
-              toggleAdding={() => toggleAdding()}
-            />
-          ) : (
-            <Button onClick={toggleAdding}>
-              <FaPlus /> Add Item
+      >
+        {session.loginUser ? (
+          <div className='flex gap-5'>
+            <Profile ref={logoutButtonRef} xxx={xxx} />
+            <Button
+              onClick={() => logoutButtonRef.current?.focus()}
+              classNames='h-full'
+            >
+              MySignOut
             </Button>
-          )}
-        </li>
-      </ul>
-      <div className='mb-3 flex gap-5'>
-        <span>*총액: {totalPrice.toLocaleString()}원</span>
-        <span>*할인: {dcPrice.toFixed(0).toLocaleString()}원</span>
+          </div>
+        ) : (
+          <Login />
+        )}
       </div>
+
       <Button onClick={toggleReloadSession}>Reload Session</Button>
     </>
   );

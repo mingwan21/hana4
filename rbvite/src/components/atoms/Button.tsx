@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes, PropsWithChildren } from 'react';
 
 type Props = {
-  variant?: string;
+  variant?: '' | 'btn-primary' | 'btn-danger' | 'btn-success';
   classNames?: string;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 

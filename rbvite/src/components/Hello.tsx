@@ -5,6 +5,7 @@ import {
   useImperativeHandle,
   useReducer,
   useState,
+  useTransition,
 } from 'react';
 import { useCounter } from '../hooks/counter-hook';
 import { useSession } from '../hooks/session-context';
@@ -12,6 +13,9 @@ import { useFetch } from '../hooks/fetch-hook';
 import { FaSpinner } from 'react-icons/fa6';
 import { useMyReducer, useMyState } from '../libs/my-uses';
 import Button from './atoms/Button';
+import useToggle from '../hooks/toggle';
+import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 type TitleProps = {
   text: string;
@@ -52,7 +56,7 @@ const Body = ({ children }: { children: ReactNode }) => {
 // }
 
 type Props = {
-  friend: number;
+  friend?: number;
 };
 
 export type MyHandler = {
@@ -66,17 +70,22 @@ type PlaceUser = {
   email: string;
 };
 
-function Hello({ friend }: Props, ref: ForwardedRef<MyHandler>) {
+function Hello({ friend = 10 }: Props, ref: ForwardedRef<MyHandler>) {
   // const [myState, setMyState] = useState(() => new Date().getTime());
   const {
     session: { loginUser },
   } = useSession();
   const { count, plusCount, minusCount } = useCounter();
 
-  const [p, dispatchP] = useReducer((pre) => pre + 10, 0);
-  const [q, dispatchQ] = useMyReducer((pre) => pre + 10, 0);
-  //const [myState, setMyState] = useState(0);
+  const [isPStrong, togglePStrong] = useToggle(false);
+  const [p, dispatchP] = useReducer((pre) => pre + 1, 0);
+  const [q, dispatchQ] = useMyReducer((pre) => pre + 1, 0);
+  // const [myState, setMyState] = useState(0);
+  const [myState, setMyState] = useMyState(0);
   let v = 1;
+
+  const [arr, setArr] = useState<{ id: number }[]>([]);
+  const [isPending, startTransition] = useTransition();
 
   const handler: MyHandler = {
     jumpHelloState: () => setMyState((pre) => pre * 10),
@@ -94,8 +103,37 @@ function Hello({ friend }: Props, ref: ForwardedRef<MyHandler>) {
   );
 
   return (
-    <div className='bg-blackx text-whitex my-5 w-2/3 border border-slate-300 p-3 text-center'>
-      <Title text='Hello~' name={loginUser?.name} />
+    <div className='bg-blackx text-whitex my-1 w-full border border-slate-300 p-3 text-center'>
+      <div className='flex justify-around'>
+        <Title text='Hello~' name={loginUser?.name} />
+        <span className={clsx('text-4xl', isPStrong && 'text-blue-500')}>
+          p: {p}
+        </span>
+        <span
+          className={clsx({
+            [twMerge(`pr-5 px-${q} pl-${q + 1} text-${q}xl`)]: true,
+            'text-blue-500': !isPStrong,
+          })}
+        >
+          q: {q}
+        </span>
+        <Button
+          onClick={() => {
+            dispatchP();
+            togglePStrong(true);
+          }}
+        >
+          PPP
+        </Button>
+        <Button
+          onClick={() => {
+            dispatchQ();
+            togglePStrong(false);
+          }}
+        >
+          QQQ
+        </Button>
+      </div>
       <Body>
         <h3 className='text-center text-lg'>myState: {myState}</h3>
         {isLoading ? (
@@ -123,6 +161,13 @@ function Hello({ friend }: Props, ref: ForwardedRef<MyHandler>) {
           setMyState(myState + 1);
           plusCount();
           // console.log('v/myState=', v, myState);
+          startTransition(() => {
+            const newArr = Array.from({ length: 70000 }, (_, i) => ({
+              id: i + myState,
+            }));
+            // console.log('🚀  newArr:', newArr);
+            setArr(newArr);
+          });
         }}
         className='btn'
       >
@@ -134,6 +179,15 @@ function Hello({ friend }: Props, ref: ForwardedRef<MyHandler>) {
       <button onClick={() => minusCount()} className='btn btn-danger'>
         Minus
       </button>
+      {isPending ? (
+        <FaSpinner className='animate-spin' />
+      ) : (
+        <ul>
+          {arr.map((a) => (
+            <li key={a.id}>{a.id}</li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
