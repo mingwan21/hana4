@@ -3,7 +3,7 @@ package com.hana4.demo.repository;
 import java.util.List;
 import java.util.Optional;
 
-import com.hana4.demo.domain.User;
+import com.hana4.demo.entity.User;
 
 public interface UserRepository {
 	List<User> findAll();
@@ -19,4 +19,6 @@ public interface UserRepository {
 	Optional<User> findByName(String name);
 
 	void initialize();
+
+	void destroy();
 }

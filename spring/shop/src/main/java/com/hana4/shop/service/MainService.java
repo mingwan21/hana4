@@ -22,12 +22,8 @@ public class MainService {
 		return dao.getCusts();
 	}
 
-	public int addCust(CustDTO cust) {
-		int maxId = custs.size() + 1;
-		cust.setId(maxId);
-		custs.add(cust);
-
-		return maxId;
+	public void addCust(CustDTO cust) {
+		dao.insert(cust);
 	}
 
 	public CustDTO find(int id) {
@@ -35,8 +31,10 @@ public class MainService {
 	}
 
 	public void modify(CustDTO cust) {
+		dao.update(cust);
 	}
 
 	public void remove(Integer id) {
+		dao.delete(id);
 	}
 }

@@ -15,4 +15,10 @@ public interface CustDAO {
 	List<CustDTO> getCusts();
 
 	CustDTO getCust(int id);
+
+	void update(CustDTO cust);
+
+	void insert(CustDTO cust);
+
+	void delete(Integer id);
 }
